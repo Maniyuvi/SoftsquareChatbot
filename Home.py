@@ -6,7 +6,7 @@ st.set_page_config(
 )
 
 st.title("Welcome")
-st.write("This is a custom AI chatbot specific for our AppExchange Products Agrid, Media Manager and User 360.")
+st.write("This is a custom AI chatbot specific for our AppExchange Products Agrid, Media Manager, User 360 and Snap Data.")
 
 
 
