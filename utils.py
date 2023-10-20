@@ -28,14 +28,10 @@ def find_match(input):
     xq = res['data'][0]['embedding']
 
     result = index.query(xq, top_k=2, include_metadata=True)
-    # print('matches:::', result['matches'])
 
     return result['matches'][0]['metadata']['text']+"\n"+result['matches'][1]['metadata']['text']
 
 def query_refiner(conversation, query):
-    print('conversation :::::', conversation)
-    print('query ::::::', query)
-
     if 'user_input' in st.session_state:
         user_info = st.session_state['user_input']
         product_type = user_info['product_type']
@@ -52,8 +48,6 @@ def query_refiner(conversation, query):
     presence_penalty=0
     )
 
-    print('response ::::', response)
-
     return response['choices'][0]['text']
 
 def get_conversation_string():
@@ -63,3 +57,10 @@ def get_conversation_string():
         conversation_string += "Human: "+st.session_state['requests'][i] + "\n"
         conversation_string += "Bot: "+ st.session_state['responses'][i+1] + "\n"
     return conversation_string
+
+
+def render_animation():
+    path = "assets/typing_animation.json"
+    with open(path,"r") as file: 
+        animation_json = json.load(file) 
+        return animation_json

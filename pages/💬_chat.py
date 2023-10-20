@@ -12,8 +12,12 @@ from streamlit_chat import message
 from utils import *
 from dotenv import load_dotenv
 import user_info as UserInputs
+from streamlit_lottie import st_lottie_spinner
 
 load_dotenv()
+
+#load Animation
+typing_animation_json = render_animation()
 
 # st.markdown(
 #     """
@@ -37,12 +41,10 @@ user_input = {
     "product_type": product_type
 }
 
-print('user_input ::::', user_input)
-
 st.session_state["user_input"] = user_input
 
 if 'responses' not in st.session_state:
-    st.session_state['responses'] = []
+    st.session_state['responses'] = ["How can I assist you?"]
 
 if 'requests' not in st.session_state:
     st.session_state['requests'] = []
@@ -50,16 +52,16 @@ if 'requests' not in st.session_state:
 if 'initialPageLoad' not in st.session_state:
     st.session_state['initialPageLoad'] = True
 
+if 'prev_peoduct_select' not in st.session_state:
+     st.session_state['prev_peoduct_select'] = 'Agrid'
+
 llm = ChatOpenAI(temperature=0, model='gpt-3.5-turbo') ## find at platform.openai.com
 
 if 'buffer_memory' not in st.session_state:
             st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
 
-
 system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using the provided context, 
 and if the answer is not contained within the text below, say 'I don't know'""")
-
-#  if answer contains 'Based on the provided context,' pleace remove that sentence
 
 human_msg_template = HumanMessagePromptTemplate.from_template(template="{input}")
 
@@ -72,15 +74,15 @@ conversation = ConversationChain(memory=st.session_state.buffer_memory, prompt=p
 response_container = st.container()
 # container for text box
 textcontainer = st.container()
-
-print('Initial Load ::::::::', st.session_state.initialPageLoad)
-if(st.session_state.initialPageLoad):
-    print('if Initial Load ::::::::', st.session_state.initialPageLoad)
-    refined_query = f"""summarize the document and genrate some meaningfull qustion based on the document in {product_type}"""
-    context = find_match(refined_query)
-    response = conversation.predict(input=f"Context:\n {context} \n\n Query:\n{refined_query}")
-    st.session_state.responses.append(response) 
-    st.session_state.initialPageLoad = False
+if(st.session_state.initialPageLoad or st.session_state.prev_peoduct_select != product_type ):
+    with st_lottie_spinner(typing_animation_json, height=50, width= 50, speed=3):
+        refined_query = f"""summarize the document and genrate some meaningfull qustion based on the document in {product_type}"""
+        context = find_match(refined_query)
+        response = conversation.predict(input=f"Context:\n {context} \n\n Query:\n{refined_query}")
+        st.session_state.requests.append("Summary of the "+product_type+ " Product")
+        st.session_state.responses.append(response) 
+        st.session_state.initialPageLoad = False
+        st.session_state.prev_peoduct_select = product_type
 
 with textcontainer:
     st.session_state.initialPageLoad = False
@@ -88,9 +90,7 @@ with textcontainer:
     if query:
         print('query :::', query)
         conversation_string = get_conversation_string()
-        print('conversation_string ::::: ::: ',conversation_string)
-        # st.code(conversation_string)
-        with st.spinner("typing..."):
+        with st_lottie_spinner(typing_animation_json, height=50, width= 50, speed=3, reverse=True ):
             refined_query = query_refiner(conversation_string, query)
             print('refined_query :::::', refined_query)
             # st.subheader("Refined Query:")
