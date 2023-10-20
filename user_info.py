@@ -8,4 +8,4 @@ def responceType():
     return ["None", "Summary", "Shot Notes", "Detail", "MarkDown", "Bullet Point"]
 
 def getProductList():
-    return['Agrid', 'Meida Manager', 'User 360', 'Snap Data']
+    return['Agrid', 'Media Manager', 'User 360', 'Snap Data']
