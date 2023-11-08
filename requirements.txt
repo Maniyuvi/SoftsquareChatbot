@@ -2,7 +2,7 @@ streamlit
 langchain
 pinecone-client
 python-dotenv
-openai
+openai==1.1.1
 streamlit_chat
 sentence_transformers
 unstructured
