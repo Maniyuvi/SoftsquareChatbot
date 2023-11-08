@@ -60,8 +60,13 @@ llm = ChatOpenAI(temperature=0, model='gpt-3.5-turbo') ## find at platform.opena
 if 'buffer_memory' not in st.session_state:
             st.session_state.buffer_memory=ConversationBufferWindowMemory(k=3,return_messages=True)
 
-system_msg_template = SystemMessagePromptTemplate.from_template(template="""Answer the question as truthfully as possible using the provided context, 
-and if the answer is not contained within the text below, say 'I don't know'""")
+# Answer the question as truthfully as possible using the provided context, 
+# and if the answer is not contained within the text below, say 'I don't know'
+
+system_msg_template = SystemMessagePromptTemplate.from_template(template="""The following is a friendly conversation between a human and an AI. 
+        The AI is talkative and provides lots of specific details from its context. 
+        If the AI does not know the answer to a question, it truthfully says it does
+        not know.""")
 
 human_msg_template = HumanMessagePromptTemplate.from_template(template="{input}")
 
