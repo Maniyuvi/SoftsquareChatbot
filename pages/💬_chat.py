@@ -91,7 +91,7 @@ if(st.session_state.initialPageLoad or st.session_state.prev_peoduct_select != p
 
 with textcontainer:
     st.session_state.initialPageLoad = False
-    query = st.chat_input("Say something ... ", key="input")
+    query = st.chat_input(placeholder="Say something ... ", key="input")
     if query:
         print('query :::', query)
         conversation_string = get_conversation_string()
