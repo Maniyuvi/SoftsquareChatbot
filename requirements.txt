@@ -9,3 +9,4 @@ unstructured
 unstructured[local-inference]
 pinecone-client
 streamlit_lottie
+streamlit_pills
