@@ -1,8 +1,8 @@
-streamlit==1.28.1
+streamlit
 langchain
 pinecone-client
 python-dotenv
-openai==0.28.0
+openai
 streamlit_chat
 sentence_transformers
 unstructured
